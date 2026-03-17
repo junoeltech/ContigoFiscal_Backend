@@ -1,26 +1,25 @@
 package com.backend.contigo_fiscal.application.service;
 
-
 import com.backend.contigo_fiscal.infra.persistence.entity.RequestEntity;
 import com.backend.contigo_fiscal.infra.persistence.repository.RequestRepository;
 import com.backend.contigo_fiscal.web.dto.CreateRequestDTO;
-import com.backend.contigo_fiscal.web.dto.DocumentItemDTO;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class RequestService {
 
     private final RequestRepository requestRepository;
-    private final ObjectMapper objectMapper;
 
+    /**
+     * Crea una nueva solicitud de prospecto capturada desde el chatbot.
+     * Se guarda con el estado inicial "nuevo" para la gestión del contador[cite: 5].
+     */
     public RequestEntity create(CreateRequestDTO dto) {
 
         RequestEntity entity = RequestEntity.builder()
@@ -30,35 +29,21 @@ public class RequestService {
                 .rfc(dto.getRfc())
                 .tipoContribuyente(dto.getTipoContribuyente())
                 .servicioId(dto.getServicioId())
-                .servicioText(dto.getServicioText())
-                .descripcionBreve(dto.getDescripcionBreve())
-
-                // campos default
-                .status("NEW")
-                .prioridad("MEDIA")
-                .score(0)
-                .source("API")
-
-                // documentos
-                .documentos(convertDocumentos(dto.getDocumentos()))
-
+                .status("nuevo") 
                 .build();
 
         return requestRepository.save(entity);
     }
 
-    private List<Object> convertDocumentos(List<DocumentItemDTO> documentos) {
+public List<RequestEntity> findAll() {
+    
+    return requestRepository.findAll(); 
+}
 
-        if (documentos == null) {
-            return null;
-        }
-
-        return documentos.stream()
-                .map(item -> objectMapper.convertValue(
-                        item,
-                        new TypeReference<Map<String, Object>>() {}
-                ))
-                .map(map -> (Object) map)
-                .collect(Collectors.toList());
-    }
+public void updateStatus(UUID id, String status) {
+    requestRepository.findById(id).ifPresent(entity -> {
+        entity.setStatus(status.toLowerCase());
+        requestRepository.save(entity);
+    });
+}
 }
