@@ -38,6 +38,8 @@ public final class RequestMapper {
         RequestSummaryDTO s = new RequestSummaryDTO();
         s.setId(entity.getId());
         s.setNombreCompleto(entity.getNombreCompleto());
+        s.setRfc(entity.getRfc());
+        s.setTelefono(entity.getTelefono());
         s.setCorreo(entity.getCorreo());
         s.setTipoContribuyente(entity.getTipoContribuyente()); 
         s.setStatus(entity.getStatus()); 

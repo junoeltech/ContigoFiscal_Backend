@@ -6,14 +6,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-/**
- * Respuesta mínima tras crear una solicitud.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestResponseDTO {
     private UUID id;
-    private String prioridad; // 'alta'|'media'|'baja'
+    private String prioridad; 
     private Integer score;
 }

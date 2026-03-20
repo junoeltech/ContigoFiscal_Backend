@@ -13,6 +13,8 @@ public class RequestSummaryDTO {
     private UUID id;
     private String nombreCompleto;
     private String correo;
+    private String telefono;
+    private String rfc;
     private String tipoContribuyente; 
     private String status;
     private OffsetDateTime createdAt;

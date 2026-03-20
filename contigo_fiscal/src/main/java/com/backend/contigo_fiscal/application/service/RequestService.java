@@ -16,10 +16,7 @@ public class RequestService {
 
     private final RequestRepository requestRepository;
 
-    /**
-     * Crea una nueva solicitud de prospecto capturada desde el chatbot.
-     * Se guarda con el estado inicial "nuevo" para la gestión del contador[cite: 5].
-     */
+
     public RequestEntity create(CreateRequestDTO dto) {
 
         RequestEntity entity = RequestEntity.builder()

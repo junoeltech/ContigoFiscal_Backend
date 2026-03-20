@@ -2,7 +2,6 @@ package com.backend.contigo_fiscal.infra.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -17,11 +16,13 @@ public class ServiceDocumentEntity {
     @Column(columnDefinition = "uuid")
     private UUID id;
 
-    @Column(name = "servicio_id", columnDefinition = "uuid", nullable = false)
-    private UUID servicioId;
-
-    @Column(name = "documento_id", columnDefinition = "uuid", nullable = false)
-    private UUID documentoId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "servicio_id", nullable = false)
+    private ServiceEntity servicio;
+  
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "documento_id", nullable = false)
+    private DocumentEntity documento;
 
     @Column(nullable = false)
     private Boolean required;

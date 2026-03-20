@@ -23,18 +23,16 @@ public class RequestController {
 
     private final RequestService requestService;
 
-    // --- PÚBLICO: Para el Chatbot ---
+  
 
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<RequestResponseDTO> create(@Valid @RequestBody CreateRequestDTO dto) {
         RequestEntity saved = requestService.create(dto);
-        // Usamos el mapper para la respuesta
         return ResponseEntity.ok(RequestMapper.toResponse(saved));
     }
 
-    // --- PROTEGIDO: Para el Dashboard del Contador 
 
-    @GetMapping
+    @GetMapping("/consultar")
     public ResponseEntity<List<RequestSummaryDTO>> getAll() {
         List<RequestSummaryDTO> list = requestService.findAll()
                 .stream()
