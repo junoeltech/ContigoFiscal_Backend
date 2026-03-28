@@ -6,5 +6,5 @@ RUN mvn clean package -DskipTests
 # Paso 2: Ejecutar la aplicación
 FROM openjdk:21-jdk-slim
 COPY --from=build /target/*.jar app.jar
-EXPOSE 8080
+EXPOSE 8081
 ENTRYPOINT ["java", "-jar", "app.jar"]
