@@ -4,6 +4,7 @@ import com.backend.contigo_fiscal.infra.persistence.entity.RequestEntity;
 import com.backend.contigo_fiscal.web.dto.CreateRequestDTO;
 import com.backend.contigo_fiscal.web.dto.RequestResponseDTO;
 import com.backend.contigo_fiscal.web.dto.RequestSummaryDTO;
+
 import java.util.UUID;
 
 public final class RequestMapper {
@@ -21,7 +22,7 @@ public final class RequestMapper {
                 .rfc(dto.getRfc())
                 .tipoContribuyente(dto.getTipoContribuyente())
                 .servicioId(dto.getServicioId())
-                .status("nuevo") // [cite: 5]
+                .status("nuevo") 
                 .build();
     }
 
@@ -34,16 +35,19 @@ public final class RequestMapper {
     }
 
     public static RequestSummaryDTO toSummary(RequestEntity entity) {
-        if (entity == null) return null;
-        RequestSummaryDTO s = new RequestSummaryDTO();
-        s.setId(entity.getId());
-        s.setNombreCompleto(entity.getNombreCompleto());
-        s.setRfc(entity.getRfc());
-        s.setTelefono(entity.getTelefono());
-        s.setCorreo(entity.getCorreo());
-        s.setTipoContribuyente(entity.getTipoContribuyente()); 
-        s.setStatus(entity.getStatus()); 
-        s.setCreatedAt(entity.getCreatedAt());
-        return s;
-    }
+    if (entity == null) return null;
+    
+    RequestSummaryDTO s = new RequestSummaryDTO();
+    s.setId(entity.getId());
+    s.setNombreCompleto(entity.getNombreCompleto());
+    s.setServicioId(entity.getServicioId()); 
+    s.setRfc(entity.getRfc());
+    s.setTelefono(entity.getTelefono());
+    s.setCorreo(entity.getCorreo());
+    s.setTipoContribuyente(entity.getTipoContribuyente()); 
+    s.setStatus(entity.getStatus()); 
+    s.setCreatedAt(entity.getCreatedAt());
+    
+    return s;
+}
 }

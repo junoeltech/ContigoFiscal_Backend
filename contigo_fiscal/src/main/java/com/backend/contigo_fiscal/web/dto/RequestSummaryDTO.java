@@ -11,6 +11,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RequestSummaryDTO {
     private UUID id;
+    private String nombreServicio;
+    private UUID servicioId;
     private String nombreCompleto;
     private String correo;
     private String telefono;

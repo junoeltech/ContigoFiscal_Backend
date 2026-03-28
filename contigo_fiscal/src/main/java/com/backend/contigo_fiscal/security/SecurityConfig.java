@@ -27,13 +27,14 @@ public class SecurityConfig {
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
-        .cors(Customizer.withDefaults()) // Esto debe estar vinculado al Bean de abajo
+        .cors(Customizer.withDefaults()) 
         .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
             // REGLA 1: Permitir OPTIONS para que el navegador no bloquee el "pre-flight"
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             
             // REGLA 2: Rutas específicas para el Chatbot (Sin contraseña)
+            .requestMatchers("/api/auth/**").permitAll()
             .requestMatchers("/api/catalogs/**").permitAll()
             .requestMatchers("/api/requests/**").permitAll()
             .requestMatchers("/", "/actuator/health").permitAll()
@@ -41,7 +42,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             // REGLA 3: Todo lo demás (Dashboard) SI requiere admin/contigo123
             .anyRequest().authenticated()
         )
-        // Importante: Quitamos el formulario por defecto para evitar redirecciones raras
+       
         .httpBasic(Customizer.withDefaults());
 
     return http.build();
@@ -64,7 +65,6 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
   @Bean
 public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    // Permitimos cualquier origen para pruebas, luego lo cierras a tu puerto de React
     configuration.setAllowedOrigins(Arrays.asList("*")); 
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "x-auth-token"));
@@ -74,4 +74,5 @@ public CorsConfigurationSource corsConfigurationSource() {
     source.registerCorsConfiguration("/**", configuration);
     return source;
 }
+
 }

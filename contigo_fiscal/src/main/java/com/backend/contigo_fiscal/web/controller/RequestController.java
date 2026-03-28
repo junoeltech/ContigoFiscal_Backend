@@ -6,6 +6,7 @@ import com.backend.contigo_fiscal.infra.persistence.entity.RequestEntity;
 import com.backend.contigo_fiscal.web.dto.CreateRequestDTO;
 import com.backend.contigo_fiscal.web.dto.RequestResponseDTO;
 import com.backend.contigo_fiscal.web.dto.RequestSummaryDTO;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,13 +34,11 @@ public class RequestController {
 
 
     @GetMapping("/consultar")
-    public ResponseEntity<List<RequestSummaryDTO>> getAll() {
-        List<RequestSummaryDTO> list = requestService.findAll()
-                .stream()
-                .map(RequestMapper::toSummary)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(list);
-    }
+public ResponseEntity<List<RequestSummaryDTO>> getAll() {
+    // El Service ya hace el trabajo de mapeo y de buscar los nombres de los servicios
+    List<RequestSummaryDTO> list = requestService.findAll(); 
+    return ResponseEntity.ok(list);
+}
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<Void> updateStatus(
@@ -48,4 +47,10 @@ public class RequestController {
         requestService.updateStatus(id, status);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        requestService.delete(id); 
+        return ResponseEntity.noContent().build();
+}
 }
